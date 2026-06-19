@@ -1,601 +1,421 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", function () {
-
+    initPageLoad();
     initStickyHeader();
+    initMobileMenu();
     initSmoothScroll();
-    initBackToTop();
     initActiveNav();
-
+    initBackToTop();
+    initHeroBg();
+    initMenuFilter();
+    initGalleryFilter();
+    initGalleryLightbox();
+    initTestimonialSlider();
+    initScrollReveal();
+    initForms();
+    initCounters();
+    initRipple();
+    initFooterYear();
 });
 
-/*=====================
-STICKY HEADER
-=====================*/
+/* ==============================
+   PAGE LOAD FADE IN
+============================== */
+function initPageLoad() {
+    window.addEventListener("load", function () {
+        document.body.classList.add("loaded");
+    });
+}
 
+/* ==============================
+   HERO BG ANIMATION
+============================== */
+function initHeroBg() {
+    const bg = document.querySelector(".hero-bg");
+    if (!bg) return;
+    setTimeout(() => bg.classList.add("ready"), 100);
+}
+
+/* ==============================
+   STICKY HEADER
+============================== */
 function initStickyHeader() {
-
     const header = document.querySelector(".site-header");
-
     if (!header) return;
-
     window.addEventListener("scroll", function () {
-
-        if (window.scrollY > 50) {
-
-            header.classList.add("sticky-active");
-
-        } else {
-
-            header.classList.remove("sticky-active");
-
-        }
-
+        header.classList.toggle("sticky-active", window.scrollY > 50);
+        header.classList.toggle("small-nav", window.scrollY > 100);
     });
-
 }
 
-/*=====================
-SMOOTH SCROLL
-=====================*/
+/* ==============================
+   MOBILE MENU
+============================== */
+function initMobileMenu() {
+    const toggle = document.querySelector(".mobile-toggle");
+    const nav = document.querySelector(".nav-menu");
+    if (!toggle || !nav) return;
 
+    toggle.addEventListener("click", function () {
+        const open = nav.classList.toggle("mobile-active");
+        toggle.innerHTML = open
+            ? '<i class="fa-solid fa-xmark"></i>'
+            : '<i class="fa-solid fa-bars"></i>';
+    });
+
+    document.querySelectorAll(".nav-menu a").forEach(link => {
+        link.addEventListener("click", function () {
+            nav.classList.remove("mobile-active");
+            toggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        });
+    });
+}
+
+/* ==============================
+   SMOOTH SCROLL
+============================== */
 function initSmoothScroll() {
-
-    const links = document.querySelectorAll('a[href^="#"]');
-
-    links.forEach(function (link) {
-
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener("click", function (e) {
-
             const href = this.getAttribute("href");
-
-            if (href === "#" || href === "") {
-
-                return;
-
-            }
-
+            if (href === "#" || href === "") return;
             const target = document.querySelector(href);
-
             if (target) {
-
                 e.preventDefault();
-
-                target.scrollIntoView({
-
-                    behavior: "smooth"
-
-                });
-
+                const offset = 80;
+                const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top, behavior: "smooth" });
             }
-
         });
-
     });
-
 }
 
-/*=====================
-BACK TO TOP
-=====================*/
-
-function initBackToTop() {
-
-    const btn = document.createElement("button");
-
-    btn.innerHTML = "↑";
-
-    btn.className = "back-to-top";
-
-    document.body.appendChild(btn);
-
-    window.addEventListener("scroll", function () {
-
-        if (window.scrollY > 300) {
-
-            btn.style.display = "block";
-
-        } else {
-
-            btn.style.display = "none";
-
-        }
-
-    });
-
-    btn.addEventListener("click", function () {
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
-
-        });
-
-    });
-
-}
-
-/*=====================
-ACTIVE NAV
-=====================*/
-
+/* ==============================
+   ACTIVE NAV ON SCROLL
+============================== */
 function initActiveNav() {
-
-    const sections = document.querySelectorAll("section");
-
+    const sections = document.querySelectorAll("section[id]");
     const links = document.querySelectorAll(".nav-menu a");
-
     window.addEventListener("scroll", function () {
-
         let current = "";
-
-        sections.forEach(function (section) {
-
-            const top = section.offsetTop - 150;
-
-            if (window.scrollY >= top) {
-
+        sections.forEach(section => {
+            if (window.scrollY >= section.offsetTop - 120) {
                 current = section.getAttribute("id");
-
             }
-
         });
-
-        links.forEach(function (link) {
-
+        links.forEach(link => {
             link.classList.remove("active");
-
             if (link.getAttribute("href") === "#" + current) {
-
                 link.classList.add("active");
-
             }
-
         });
+    });
+}
 
+/* ==============================
+   BACK TO TOP
+============================== */
+function initBackToTop() {
+    const btn = document.getElementById("backToTop");
+    if (!btn) return;
+    window.addEventListener("scroll", () => {
+        btn.classList.toggle("visible", window.scrollY > 400);
+    });
+    btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+}
+
+/* ==============================
+   MENU FILTER
+============================== */
+function initMenuFilter() {
+    const btns = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".dish-card");
+    if (!btns.length) return;
+
+    btns.forEach(btn => {
+        btn.addEventListener("click", function () {
+            btns.forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+            const filter = this.dataset.filter;
+            cards.forEach(card => {
+                const match = filter === "all" || card.dataset.category === filter;
+                card.classList.toggle("hidden", !match);
+                if (match) {
+                    card.style.animation = "none";
+                    card.offsetHeight; // reflow
+                    card.style.animation = "";
+                }
+            });
+        });
+    });
+}
+
+/* ==============================
+   GALLERY FILTER
+============================== */
+function initGalleryFilter() {
+    const btns = document.querySelectorAll(".gfilter-btn");
+    const items = document.querySelectorAll(".gallery-item");
+    if (!btns.length) return;
+
+    btns.forEach(btn => {
+        btn.addEventListener("click", function () {
+            btns.forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+            const filter = this.dataset.gfilter;
+            items.forEach(item => {
+                const match = filter === "all" || item.dataset.gcategory === filter;
+                item.classList.toggle("hidden", !match);
+            });
+        });
+    });
+}
+
+/* ==============================
+   GALLERY LIGHTBOX
+============================== */
+function initGalleryLightbox() {
+    const items = document.querySelectorAll(".gallery-item");
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbClose = document.getElementById("lbClose");
+    const lbPrev = document.getElementById("lbPrev");
+    const lbNext = document.getElementById("lbNext");
+    if (!items.length || !lightbox) return;
+
+    let currentIndex = 0;
+
+    function getVisible() {
+        return [...items].filter(i => !i.classList.contains("hidden"));
+    }
+
+    function openLightbox(idx) {
+        const visible = getVisible();
+        currentIndex = idx;
+        lbImg.src = visible[idx].querySelector("img").src;
+        lightbox.classList.add("open");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove("open");
+        document.body.style.overflow = "";
+    }
+
+    items.forEach((item, i) => {
+        item.addEventListener("click", function () {
+            const visible = getVisible();
+            const idx = visible.indexOf(item);
+            if (idx !== -1) openLightbox(idx);
+        });
     });
 
-}
-/*=====================
-MOBILE MENU
-=====================*/
+    lbClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", function (e) { if (e.target === lightbox) closeLightbox(); });
 
-function initMobileMenu(){
+    lbPrev.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const visible = getVisible();
+        currentIndex = (currentIndex - 1 + visible.length) % visible.length;
+        lbImg.src = visible[currentIndex].querySelector("img").src;
+    });
 
-const nav=document.querySelector(".nav-menu");
+    lbNext.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const visible = getVisible();
+        currentIndex = (currentIndex + 1) % visible.length;
+        lbImg.src = visible[currentIndex].querySelector("img").src;
+    });
 
-const container=document.querySelector(".site-header .container");
-
-if(!nav||!container)return;
-
-const btn=document.createElement("button");
-
-btn.innerHTML="☰";
-
-btn.className="mobile-toggle";
-
-container.prepend(btn);
-
-btn.addEventListener("click",function(){
-
-nav.classList.toggle("mobile-active");
-
-});
-
-document.querySelectorAll(".nav-menu a").forEach(link=>{
-
-link.addEventListener("click",function(){
-
-nav.classList.remove("mobile-active");
-
-});
-
-});
-
+    document.addEventListener("keydown", function (e) {
+        if (!lightbox.classList.contains("open")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") lbPrev.click();
+        if (e.key === "ArrowRight") lbNext.click();
+    });
 }
 
-initMobileMenu();
-
-
-/*=====================
-GALLERY LIGHTBOX
-=====================*/
-
-function initGallery(){
-
-const images=document.querySelectorAll(".gallery-grid img");
-
-if(images.length===0)return;
-
-const overlay=document.createElement("div");
-
-overlay.className="lightbox";
-
-overlay.innerHTML="<img>";
-
-document.body.appendChild(overlay);
-
-const img=overlay.querySelector("img");
-
-images.forEach(image=>{
-
-image.addEventListener("click",function(){
-
-overlay.style.display="flex";
-
-img.src=this.src;
-
-});
-
-});
-
-overlay.addEventListener("click",function(){
-
-overlay.style.display="none";
-
-});
-
-}
-
-initGallery();
-
-
-/*=====================
-FOOTER YEAR
-=====================*/
-
-function initFooter(){
-
-const p=document.querySelector(".footer-bottom p");
-
-if(!p)return;
-
-p.innerHTML="© "+new Date().getFullYear()+" Restaurant Name. All Rights Reserved.";
-
-}
-
-initFooter();
-/*=====================
-TESTIMONIAL SLIDER
-=====================*/
-
-function initTestimonials() {
-
+/* ==============================
+   TESTIMONIAL SLIDER
+============================== */
+function initTestimonialSlider() {
+    const track = document.querySelector(".testimonial-track");
     const cards = document.querySelectorAll(".testimonial-card");
+    const dots = document.querySelectorAll(".dot");
+    const prev = document.querySelector(".slider-prev");
+    const next = document.querySelector(".slider-next");
+    if (!track || !cards.length) return;
 
-    if (cards.length === 0) return;
+    let current = 0;
+    let autoplay;
 
-    let index = 0;
-
-    function showCard() {
-
-        cards.forEach(card => {
-            card.style.display = "none";
-        });
-
-        cards[index].style.display = "block";
-
+    function goTo(idx) {
+        current = (idx + cards.length) % cards.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle("active", i === current));
     }
 
-    showCard();
+    function startAuto() {
+        autoplay = setInterval(() => goTo(current + 1), 5000);
+    }
 
-    setInterval(() => {
+    function stopAuto() { clearInterval(autoplay); }
 
-        index++;
+    prev && prev.addEventListener("click", () => { stopAuto(); goTo(current - 1); startAuto(); });
+    next && next.addEventListener("click", () => { stopAuto(); goTo(current + 1); startAuto(); });
+    dots.forEach((dot, i) => dot.addEventListener("click", () => { stopAuto(); goTo(i); startAuto(); }));
 
-        if (index >= cards.length) {
-
-            index = 0;
-
-        }
-
-        showCard();
-
-    }, 4000);
-
+    startAuto();
 }
 
-initTestimonials();
-
-
-/*=====================
-RESERVATION FORM
-=====================*/
-
-function initReservationForm() {
-
-    const form = document.querySelector(".reservation-form");
-
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-
-        e.preventDefault();
-
-        const name = form.name.value.trim();
-        const email = form.email.value.trim();
-
-        if (name === "" || email === "") {
-
-            alert("Please fill all required fields.");
-
-            return;
-
-        }
-
-        alert("Table Reserved Successfully!");
-
-        form.reset();
-
-    });
-
-}
-
-initReservationForm();
-
-
-/*=====================
-CONTACT FORM
-=====================*/
-
-function initContactForm() {
-
-    const form = document.querySelector(".contact-form");
-
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-
-        e.preventDefault();
-
-        const name = form.name.value.trim();
-        const email = form.email.value.trim();
-        const message = form.message.value.trim();
-
-        if (name === "" || email === "" || message === "") {
-
-            alert("Please fill all fields.");
-
-            return;
-
-        }
-
-        alert("Message Sent Successfully!");
-
-        form.reset();
-
-    });
-
-}
-
-initContactForm();
-
-
-/*=====================
-NEWSLETTER
-=====================*/
-
-function initNewsletter() {
-
-    const form = document.querySelector(".newsletter-form");
-
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-
-        e.preventDefault();
-
-        const email = form.querySelector("input").value.trim();
-
-        if (email === "" || !email.includes("@")) {
-
-            alert("Enter a valid email.");
-
-            return;
-
-        }
-
-        alert("Subscribed Successfully!");
-
-        form.reset();
-
-    });
-
-}
-
-initNewsletter();
-/*=====================
-SCROLL REVEAL
-=====================*/
-
-function initReveal() {
-
-    const items = document.querySelectorAll(
-        ".dish-card,.feature-box,.event-card,.testimonial-card,.gallery-grid img"
+/* ==============================
+   SCROLL REVEAL
+============================== */
+function initScrollReveal() {
+    const targets = document.querySelectorAll(
+        ".dish-card, .feature-box, .event-card, .gallery-item, .about-feat, .fs-item, .contact-info-item, .rscore"
     );
+    if (!targets.length) return;
 
-    if (items.length === 0) return;
-
-    const observer = new IntersectionObserver(function(entries){
-
-        entries.forEach(function(entry){
-
-            if(entry.isIntersecting){
-
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
                 entry.target.classList.add("show-item");
-
+                observer.unobserve(entry.target);
             }
-
         });
+    }, { threshold: 0.15 });
 
-    },{
-
-        threshold:0.2
-
+    targets.forEach(el => {
+        el.classList.add("hidden-item");
+        observer.observe(el);
     });
-
-    items.forEach(function(item){
-
-        item.classList.add("hidden-item");
-
-        observer.observe(item);
-
-    });
-
 }
 
-initReveal();
+/* ==============================
+   COUNTER ANIMATION
+============================== */
+function initCounters() {
+    const counters = document.querySelectorAll(".counter");
+    if (!counters.length) return;
 
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.dataset.target, 10);
+                let count = 0;
+                const step = Math.ceil(target / 60);
+                const timer = setInterval(() => {
+                    count += step;
+                    if (count >= target) { el.textContent = target; clearInterval(timer); }
+                    else { el.textContent = count; }
+                }, 25);
+                observer.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
 
-/*=====================
-LAZY IMAGE LOADING
-=====================*/
-
-function initLazyImages(){
-
-    const images=document.querySelectorAll("img");
-
-    images.forEach(function(img){
-
-        img.loading="lazy";
-
-    });
-
+    counters.forEach(c => observer.observe(c));
 }
 
-initLazyImages();
-
-
-/*=====================
-ESC CLOSE LIGHTBOX
-=====================*/
-
-document.addEventListener("keydown",function(e){
-
-    if(e.key==="Escape"){
-
-        const lightbox=document.querySelector(".lightbox");
-
-        if(lightbox){
-
-            lightbox.style.display="none";
-
-        }
-
+/* ==============================
+   FORM HANDLING
+============================== */
+function initForms() {
+    // Reservation
+    const resForm = document.getElementById("resForm");
+    const resSuccess = document.getElementById("resSuccess");
+    if (resForm) {
+        resForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const name = this.name.value.trim();
+            const email = this.email.value.trim();
+            const date = this.date.value;
+            const time = this.time.value;
+            if (!name || !email || !date || !time) {
+                shakeForm(resForm);
+                return;
+            }
+            resForm.querySelectorAll("input, select, textarea, button").forEach(el => el.disabled = true);
+            if (resSuccess) resSuccess.classList.add("show");
+            resForm.querySelector("button[type=submit]").textContent = "✓ Confirmed!";
+        });
     }
 
-});
+    // Contact
+    const contactForm = document.getElementById("contactForm");
+    const contactSuccess = document.getElementById("contactSuccess");
+    if (contactForm) {
+        contactForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const name = this.name.value.trim();
+            const email = this.email.value.trim();
+            const message = this.message.value.trim();
+            if (!name || !email || !message) {
+                shakeForm(contactForm);
+                return;
+            }
+            if (contactSuccess) contactSuccess.classList.add("show");
+            contactForm.reset();
+        });
+    }
 
-
-/*=====================
-PAGE LOADED
-=====================*/
-
-window.addEventListener("load",function(){
-
-    document.body.classList.add("loaded");
-
-});
-/*=====================
-COUNTER ANIMATION
-=====================*/
-
-function initCounters(){
-
-const counters=document.querySelectorAll(".counter");
-
-if(counters.length===0)return;
-
-counters.forEach(counter=>{
-
-const target=+counter.getAttribute("data-target");
-
-let count=0;
-
-const update=()=>{
-
-const increment=target/100;
-
-if(count<target){
-
-count+=increment;
-
-counter.innerText=Math.ceil(count);
-
-setTimeout(update,20);
-
-}else{
-
-counter.innerText=target;
-
+    // Newsletter
+    const nlForm = document.getElementById("nlForm");
+    const nlSuccess = document.getElementById("nlSuccess");
+    if (nlForm) {
+        nlForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = this.email.value.trim();
+            if (!email || !email.includes("@")) {
+                shakeForm(nlForm);
+                return;
+            }
+            if (nlSuccess) nlSuccess.classList.add("show");
+            nlForm.style.display = "none";
+        });
+    }
 }
 
-};
-
-update();
-
-});
-
+function shakeForm(form) {
+    form.style.animation = "shake .4s ease";
+    setTimeout(() => form.style.animation = "", 400);
 }
 
-initCounters();
-
-
-/*=====================
-BUTTON RIPPLE EFFECT
-=====================*/
-
-document.querySelectorAll(".btn").forEach(button=>{
-
-button.addEventListener("click",function(e){
-
-const ripple=document.createElement("span");
-
-const rect=this.getBoundingClientRect();
-
-const size=Math.max(rect.width,rect.height);
-
-ripple.style.width=size+"px";
-ripple.style.height=size+"px";
-
-ripple.style.left=e.clientX-rect.left-size/2+"px";
-ripple.style.top=e.clientY-rect.top-size/2+"px";
-
-ripple.className="ripple";
-
-this.appendChild(ripple);
-
-setTimeout(()=>{
-
-ripple.remove();
-
-},600);
-
-});
-
-});
-
-
-/*=====================
-NAVBAR SHRINK
-=====================*/
-
-window.addEventListener("scroll",()=>{
-
-const nav=document.querySelector(".site-header");
-
-if(!nav)return;
-
-if(window.scrollY>100){
-
-nav.classList.add("small-nav");
-
-}else{
-
-nav.classList.remove("small-nav");
-
+/* ==============================
+   RIPPLE EFFECT
+============================== */
+function initRipple() {
+    document.querySelectorAll(".btn").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            const ripple = document.createElement("span");
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.className = "ripple";
+            ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size / 2}px;top:${e.clientY - rect.top - size / 2}px`;
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
 }
 
-});
+/* ==============================
+   FOOTER YEAR
+============================== */
+function initFooterYear() {
+    const el = document.getElementById("footer-copy");
+    if (el) {
+        el.innerHTML = `&copy; ${new Date().getFullYear()} Yummy Yummy Restaurant. All Rights Reserved.`;
+    }
+}
+
+/* ==============================
+   SHAKE ANIMATION (CSS inject)
+============================== */
+(function injectShake() {
+    const style = document.createElement("style");
+    style.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}`;
+    document.head.appendChild(style);
+})();
