@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Menu — Yummy Yummy Restaurant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #e8c97a;
+            --gold-pale: #faf3dc;
+            --ink: #0f0f0f;
+            --dark: #1a1a1a;
+            --smoke: #242424;
+            --fog: #777;
+            --white: #fff;
+            --off-white: #faf9f6;
+            --cream: #f5f0e8;
+            --shadow-sm: 0 4px 15px rgba(0,0,0,.07);
+            --shadow-md: 0 8px 30px rgba(0,0,0,.12);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --transition: all .35s ease;
+            --container: 1280px;
+            /* Cuisine colors */
+            --indian: #e8470a;
+            --chinese: #c0392b;
+            --south: #27ae60;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--off-white);
+            color: var(--fog);
+            line-height: 1.75;
+            overflow-x: hidden;
+        }
+        img { width: 100%; display: block; object-fit: cover; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        h1,h2,h3,h4,h5 { color: var(--ink); line-height: 1.2; font-family: 'Playfair Display', serif; }
+        em { font-style: italic; color: var(--gold); }
+
+        .container {
+            width: min(100% - 2rem, var(--container));
+            margin-inline: auto;
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--ink);
+            box-shadow: 0 4px 20px rgba(0,0,0,.3);
+        }
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+            gap: 1.5rem;
+        }
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        .logo a i { color: var(--gold); }
+        .logo a span { color: var(--gold); }
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            color: rgba(255,255,255,.7);
+            font-size: .82rem;
+            font-weight: 500;
+            padding: .6rem 1.25rem;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 999px;
+            transition: var(--transition);
+        }
+        .back-link:hover { color: var(--gold); border-color: var(--gold); }
+
+        /* ===== HERO BANNER ===== */
+        .menu-hero {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1008 50%, #0a0a0a 100%);
+            padding: 5rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,.15) 0%, transparent 70%);
+        }
+        .menu-hero .container { position: relative; z-index: 1; }
+        .menu-hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .72rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .menu-hero h1 { color: var(--white); font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; }
+        .menu-hero p { color: rgba(255,255,255,.55); font-size: .95rem; max-width: 520px; margin: 0 auto 2rem; }
+        .menu-hero-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: .75rem;
+        }
+        .mbadge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .45rem 1.1rem;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .05em;
+        }
+        .mbadge-veg { background: rgba(39,174,96,.15); color: #2ecc71; border: 1px solid rgba(39,174,96,.3); }
+        .mbadge-spicy { background: rgba(232,71,10,.15); color: #ff6b35; border: 1px solid rgba(232,71,10,.3); }
+        .mbadge-popular { background: rgba(212,175,55,.15); color: var(--gold); border: 1px solid rgba(212,175,55,.3); }
+
+        /* ===== CUISINE TABS ===== */
+        .cuisine-nav {
+            position: sticky;
+            top: 72px;
+            z-index: 900;
+            background: var(--white);
+            border-bottom: 2px solid rgba(0,0,0,.06);
+            box-shadow: 0 4px 20px rgba(0,0,0,.06);
+        }
+        .cuisine-tabs {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .cuisine-tabs::-webkit-scrollbar { display: none; }
+        .ctab {
+            flex-shrink: 0;
+            padding: 1.1rem 2rem;
+            font-size: .82rem;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--fog);
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            white-space: nowrap;
+        }
+        .ctab:hover { color: var(--gold); }
+        .ctab.active[data-cuisine="indian"] { color: var(--indian); border-bottom-color: var(--indian); }
+        .ctab.active[data-cuisine="chinese"] { color: var(--chinese); border-bottom-color: var(--chinese); }
+        .ctab.active[data-cuisine="south"] { color: var(--south); border-bottom-color: var(--south); }
+        .ctab.active[data-cuisine="all"] { color: var(--gold); border-bottom-color: var(--gold); }
+
+        /* ===== LEGEND ===== */
+        .legend-bar {
+            background: var(--cream);
+            padding: .85rem 0;
+            border-bottom: 1px solid rgba(0,0,0,.06);
+        }
+        .legend-bar .container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .75rem;
+            color: var(--fog);
+            font-weight: 500;
+        }
+        .veg-dot { width: 12px; height: 12px; border: 2px solid #27ae60; border-radius: 2px; position: relative; }
+        .veg-dot::after { content: ''; position: absolute; inset: 2px; background: #27ae60; border-radius: 1px; }
+        .non-veg-dot { width: 12px; height: 12px; border: 2px solid #c0392b; border-radius: 2px; position: relative; }
+        .non-veg-dot::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 5px; height: 5px; background: #c0392b; border-radius: 50%; }
+        .chilli-icon { color: #e74c3c; font-size: .85rem; }
+
+        /* ===== MAIN CONTENT ===== */
+        .menu-body { padding: 3.5rem 0 5rem; }
+
+        /* Cuisine Section */
+        .cuisine-section {
+            margin-bottom: 5rem;
+            display: none;
+        }
+        .cuisine-section.active { display: block; }
+
+        .cuisine-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0,0,0,.07);
+        }
+        .cuisine-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            flex-shrink: 0;
+        }
+        .cuisine-icon.indian { background: rgba(232,71,10,.1); color: var(--indian); }
+        .cuisine-icon.chinese { background: rgba(192,57,43,.1); color: var(--chinese); }
+        .cuisine-icon.south { background: rgba(39,174,96,.1); color: var(--south); }
+        .cuisine-header-text h2 { font-size: 2rem; margin-bottom: .25rem; }
+        .cuisine-header-text p { font-size: .88rem; color: var(--fog); }
+
+        /* Category within cuisine */
+        .menu-category { margin-bottom: 3.5rem; }
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            font-size: .7rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .category-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(212,175,55,.4), transparent);
+        }
+
+        /* Menu Items Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .menu-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .menu-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+
+        .menu-card-img {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        .menu-card-img img {
+            height: 100%;
+            transition: transform .5s ease;
+        }
+        .menu-card:hover .menu-card-img img { transform: scale(1.08); }
+
+        .card-badge {
+            position: absolute;
+            top: .75rem;
+            left: .75rem;
+            padding: .3rem .75rem;
+            border-radius: 999px;
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .badge-chef { background: var(--gold); color: var(--ink); }
+        .badge-popular { background: #ff6b35; color: white; }
+        .badge-new { background: #27ae60; color: white; }
+        .badge-special { background: #8e44ad; color: white; }
+
+        .veg-mark {
+            position: absolute;
+            top: .75rem;
+            right: .75rem;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .veg-mark .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .veg-mark .dot.veg { background: #27ae60; }
+        .veg-mark .dot.nonveg { background: #c0392b; }
+
+        .menu-card-body {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .menu-card-body h3 {
+            font-size: 1.05rem;
+            margin-bottom: .4rem;
+            color: var(--ink);
+        }
+        .item-desc {
+            font-size: .8rem;
+            color: var(--fog);
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 1rem;
+        }
+        .spice-level {
+            display: flex;
+            align-items: center;
+            gap: .25rem;
+            margin-bottom: .75rem;
+        }
+        .spice-level span { font-size: .7rem; color: var(--fog); margin-right: .25rem; }
+        .chilli { color: #e74c3c; font-size: .7rem; }
+        .chilli.dim { color: #ddd; }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: .75rem;
+            border-top: 1px solid rgba(0,0,0,.06);
+        }
+        .item-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--ink);
+            font-family: 'Playfair Display', serif;
+        }
+        .add-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .add-btn:hover { background: var(--gold); color: var(--ink); transform: scale(1.1); }
+
+        /* ===== SEARCH BAR ===== */
+        .search-wrap {
+            max-width: 480px;
+            margin: 0 auto 3rem;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            background: var(--white);
+            border: 1.5px solid rgba(0,0,0,.1);
+            border-radius: 999px;
+            padding: .75rem 1.25rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .search-box:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,.15); }
+        .search-box i { color: var(--fog); font-size: .9rem; }
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: .88rem;
+            background: transparent;
+            color: var(--ink);
+        }
+        .search-box input::placeholder { color: #bbb; }
+
+        /* ===== RESERVATION CTA ===== */
+        .menu-res-cta {
+            background: linear-gradient(135deg, var(--ink) 0%, #2a1a00 100%);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            text-align: center;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-res-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212,175,55,.12) 0%, transparent 70%);
+        }
+        .menu-res-cta .container { position: relative; }
+        .menu-res-cta h3 { color: var(--white); font-size: 1.8rem; margin-bottom: .75rem; }
+        .menu-res-cta p { color: rgba(255,255,255,.5); font-size: .9rem; margin-bottom: 2rem; }
+        .menu-res-cta .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: 1rem 2.5rem;
+            background: var(--gold);
+            color: var(--ink);
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .9rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .menu-res-cta .btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(212,175,55,.35); }
+
+        /* ===== FOOTER ===== */
+        .mini-footer {
+            background: #080808;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .mini-footer p { color: rgba(255,255,255,.25); font-size: .78rem; }
+
+        /* ===== NO RESULTS ===== */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            display: none;
+        }
+        .no-results i { font-size: 3rem; color: #ddd; margin-bottom: 1rem; display: block; }
+        .no-results p { color: var(--fog); font-size: .9rem; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .cuisine-header { flex-direction: column; text-align: center; gap: 1rem; }
+            .items-grid { grid-template-columns: 1fr; }
+            .menu-res-cta { padding: 2rem 1.5rem; }
+        }
+        @media (max-width: 580px) {
+            .ctab { padding: 1rem 1.25rem; font-size: .75rem; }
+            .menu-hero { padding: 3.5rem 0 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+    <div class="container">
+        <div class="logo">
+            <a href="index.html">
+                <i class="fa-solid fa-bowl-rice"></i>
+                Yummy <span>Yummy</span>
+            </a>
+        </div>
+        <a href="index.html" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+</header>
+
+<!-- ===== MENU HERO ===== -->
+<section class="menu-hero">
+    <div class="container">
+        <p class="menu-hero-eyebrow"><i class="fa-solid fa-utensils"></i> Yummy Yummy Restaurant</p>
+        <h1>Our Complete <em>Menu</em></h1>
+        <p>Explore 60+ dishes across North Indian, Chinese & South Indian cuisines — crafted fresh daily</p>
+        <div class="menu-hero-badges">
+            <span class="mbadge mbadge-veg"><i class="fa-solid fa-leaf"></i> Veg Options</span>
+            <span class="mbadge mbadge-spicy"><i class="fa-solid fa-pepper-hot"></i> Spice Levels Marked</span>
+            <span class="mbadge mbadge-popular"><i class="fa-solid fa-star"></i> Chef Specials</span>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CUISINE NAV ===== -->
+<nav class="cuisine-nav">
+    <div class="container">
+        <div class="cuisine-tabs">
+            <button class="ctab active" data-cuisine="all"><i class="fa-solid fa-bowl-food"></i> All Cuisines</button>
+            <button class="ctab" data-cuisine="indian"><i class="fa-solid fa-fire-flame-curved"></i> North Indian</button>
+            <button class="ctab" data-cuisine="chinese"><i class="fa-solid fa-chopstick-noodles" style="display:none"></i>🥢 Chinese</button>
+            <button class="ctab" data-cuisine="south"><i class="fa-solid fa-seedling"></i> South Indian</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== LEGEND ===== -->
+<div class="legend-bar">
+    <div class="container">
+        <div class="legend-item"><div class="veg-dot"></div> Vegetarian</div>
+        <div class="legend-item"><div class="non-veg-dot"></div> Non-Vegetarian</div>
+        <div class="legend-item"><i class="fa-solid fa-pepper-hot chilli-icon"></i> Mildly Spicy</div>
+        <div class="legend-item"><i class="fa-solid fa-pepper-hot chilli-icon"></i><i class="fa-solid fa-pepper-hot chilli-icon"></i> Medium Spicy</div>
+        <div class="legend-item"><i class="fa-solid fa-pepper-hot chilli-icon"></i><i class="fa-solid fa-pepper-hot chilli-icon"></i><i class="fa-solid fa-pepper-hot chilli-icon"></i> Very Spicy</div>
+    </div>
+</div>
+
+<!-- ===== MAIN MENU BODY ===== -->
+<main class="menu-body">
+    <div class="container">
+
+        <!-- SEARCH -->
+        <div class="search-wrap">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="menuSearch" placeholder="Search dishes e.g. 'paneer', 'noodles'…">
+            </div>
+        </div>
+        <div class="no-results" id="noResults">
+            <i class="fa-solid fa-face-sad-tear"></i>
+            <p>No dishes found. Try a different search term.</p>
+        </div>
+
+        <!-- ========================
+             NORTH INDIAN
+        ========================= -->
+        <div class="cuisine-section active" id="section-indian">
+            <div class="cuisine-header">
+                <div class="cuisine-icon indian"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <div class="cuisine-header-text">
+                    <h2>North Indian Cuisine</h2>
+                    <p>Robust gravies, tandoor specialties & Mughlai classics from our award-winning kitchen</p>
+                </div>
+            </div>
+
+            <!-- Starters -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-utensils"></i> Starters & Tandoor</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="paneer tikka" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="images/paneer tikka.jpg" alt="Paneer Tikka" onerror="this.src='https://images.unsplash.com/photo-1567337710282-00832b415979?w=500&q=80'">
+                            <span class="card-badge badge-chef">Bestseller</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Paneer Tikka</h3>
+                            <p class="item-desc">Marinated cottage cheese cubes grilled to perfection in clay tandoor with bell peppers & onions.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹349</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="seekh kebab" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80" alt="Seekh Kebab">
+                            <span class="card-badge badge-popular">Popular</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Seekh Kebab</h3>
+                            <p class="item-desc">Minced lamb & chicken with fresh herbs, garam masala, shaped on skewers and grilled on live coal.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹399</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="aloo tikki chaat" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80" alt="Aloo Tikki Chaat">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Aloo Tikki Chaat</h3>
+                            <p class="item-desc">Crispy potato patties topped with spiced chickpeas, chutneys, yogurt & pomegranate seeds.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹249</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="chicken tikka" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1610057099431-d73a1c9d2f2f?w=500&q=80" alt="Chicken Tikka">
+                            <span class="card-badge badge-chef">Chef's Choice</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Chicken Tikka</h3>
+                            <p class="item-desc">Boneless chicken marinated overnight in yogurt & spices, cooked in blazing hot tandoor oven.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹379</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="hara bhara kabab" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1628294896516-19b0bc1e0cd1?w=500&q=80" alt="Hara Bhara Kabab">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Hara Bhara Kabab</h3>
+                            <p class="item-desc">Spinach, peas & potato patties seasoned with ginger and green chilli — pan-seared until golden.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹269</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="tandoori jhinga" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1611507925009-9b65e6c6a2e7?w=500&q=80" alt="Tandoori Prawns">
+                            <span class="card-badge badge-special">Special</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Tandoori Jhinga</h3>
+                            <p class="item-desc">Jumbo prawns marinated in ajwain, chilli & mustard oil, grilled whole in the tandoor.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹549</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Main Course -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-bowl-food"></i> Main Course — Gravies & Curries</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="butter chicken" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="images/butter chiken.jpg" alt="Butter Chicken" onerror="this.src='https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80'">
+                            <span class="card-badge badge-popular">Most Loved</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Butter Chicken</h3>
+                            <p class="item-desc">Tender chicken in velvety tomato-cream gravy with fenugreek & aromatic whole spices. Served with naan.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹449</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="dal makhani" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="images/daal makhni.jpg" alt="Dal Makhani" onerror="this.src='https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80'">
+                            <span class="card-badge badge-chef">Signature</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Dal Makhani</h3>
+                            <p class="item-desc">Black lentils slow-cooked for 18 hours in a rich buttery broth. Our most iconic dish since 2005.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹299</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="palak paneer" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="images/palak panir.jpg" alt="Palak Paneer" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80'">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Palak Paneer</h3>
+                            <p class="item-desc">Velvety fresh spinach gravy blended with garlic & ginger, served with golden-fried cottage cheese cubes.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹329</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="rogan josh" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80" alt="Rogan Josh">
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Rogan Josh</h3>
+                            <p class="item-desc">Classic Kashmiri lamb curry slow-cooked with whole spices, dried Kashmiri chillies & saffron.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹499</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="shahi paneer" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&q=80" alt="Shahi Paneer">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Shahi Paneer</h3>
+                            <p class="item-desc">Royal Mughlai preparation — cottage cheese in a rich cashew & cream gravy with saffron strands.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹369</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="kadai chicken" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80" alt="Kadai Chicken">
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Kadai Chicken</h3>
+                            <p class="item-desc">Chicken cooked dry-style in a kadai with freshly ground coriander, cumin & vibrant capsicum.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹429</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Biryani & Rice -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-bowl-rice"></i> Biryani & Rice Specialties</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="dum biryani" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="images/biriyani.jpg" alt="Dum Biryani" onerror="this.src='https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80'">
+                            <span class="card-badge badge-popular">Fan Favourite</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Hyderabadi Dum Biryani</h3>
+                            <p class="item-desc">Long-grain basmati layered with marinated chicken, caramelised onions & saffron — sealed & slow-cooked.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹499</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="vegetable biryani" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80" alt="Veg Biryani">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Vegetable Biryani</h3>
+                            <p class="item-desc">Seasonal vegetables & paneer layered with fragrant basmati, whole spices & rose water — dum-cooked.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹379</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="mutton biryani" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&q=80" alt="Mutton Biryani">
+                            <span class="card-badge badge-chef">Chef's Best</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Mutton Dum Biryani</h3>
+                            <p class="item-desc">Slow-cooked tender mutton pieces, aged basmati & 17 whole spices — 4-hour preparation.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i></div>
+                            <div class="card-footer"><span class="item-price">₹599</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Breads -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-bread-slice"></i> Breads from the Tandoor</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="butter naan" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1574491183737-1c0de83f3b77?w=500&q=80" alt="Butter Naan">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Butter Naan</h3>
+                            <p class="item-desc">Leavened bread baked fresh in the tandoor, brushed generously with cultured butter.</p>
+                            <div class="card-footer"><span class="item-price">₹79</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="garlic naan" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80" alt="Garlic Naan">
+                            <span class="card-badge badge-popular">Popular</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Garlic Naan</h3>
+                            <p class="item-desc">Tandoor-baked naan topped with roasted garlic, fresh cilantro & herb butter — absolutely irresistible.</p>
+                            <div class="card-footer"><span class="item-price">₹99</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="lachha paratha" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80" alt="Lachha Paratha">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Lachha Paratha</h3>
+                            <p class="item-desc">Multi-layered whole wheat flatbread with a crispy exterior and soft, flaky interior layers.</p>
+                            <div class="card-footer"><span class="item-price">₹89</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Desserts Indian -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-cake-candles"></i> Indian Desserts</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="gulab jamun" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="images/gulab jamun.jpg" alt="Gulab Jamun" onerror="this.src='https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=500&q=80'">
+                            <span class="card-badge badge-popular">Sweet Hit</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Gulab Jamun</h3>
+                            <p class="item-desc">Soft milk-solid dumplings soaked in cardamom & rose-flavored sugar syrup. Served warm with rabri.</p>
+                            <div class="card-footer"><span class="item-price">₹149</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="rasmalai" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1634217280936-c9f5be17ef42?w=500&q=80" alt="Rasmalai">
+                            <span class="card-badge badge-chef">Signature</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Rasmalai</h3>
+                            <p class="item-desc">Delicate chenna patties soaked in chilled, saffron-tinted sweetened milk with crushed pistachios.</p>
+                            <div class="card-footer"><span class="item-price">₹179</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="gajar halwa" data-cuisine="indian">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1609501676725-7186f017a4b7?w=500&q=80" alt="Gajar Halwa">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Gajar Ka Halwa</h3>
+                            <p class="item-desc">Slow-cooked grated carrot pudding with desi ghee, whole milk, sugar & topped with cashews and raisins.</p>
+                            <div class="card-footer"><span class="item-price">₹159</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================
+             CHINESE
+        ========================= -->
+        <div class="cuisine-section" id="section-chinese">
+            <div class="cuisine-header">
+                <div class="cuisine-icon chinese">🥢</div>
+                <div class="cuisine-header-text">
+                    <h2>Indo-Chinese Cuisine</h2>
+                    <p>Bold, saucy & fiery — our unique fusion of Chinese techniques with Indian flavours</p>
+                </div>
+            </div>
+
+            <!-- Chinese Starters -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-utensils"></i> Soups & Starters</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="hot and sour soup" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80" alt="Hot and Sour Soup">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Hot & Sour Soup</h3>
+                            <p class="item-desc">Vegetable broth with mushrooms, tofu & bamboo shoots — spicy, tangy & thickened with cornflour.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹199</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="manchow soup" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80" alt="Manchow Soup">
+                            <span class="card-badge badge-popular">Crowd Favourite</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Manchow Soup</h3>
+                            <p class="item-desc">Dark, spicy Indo-Chinese broth with finely chopped vegetables topped with crispy fried noodles.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹219</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="gobi manchurian" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1562802378-063ec186a863?w=500&q=80" alt="Gobi Manchurian">
+                            <span class="card-badge badge-chef">Must Try</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Gobi Manchurian</h3>
+                            <p class="item-desc">Crispy fried cauliflower florets tossed in a tangy, spicy Manchurian sauce with spring onions.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹279</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="chicken manchurian" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1625944230945-1b7dd3b949ab?w=500&q=80" alt="Chicken Manchurian">
+                            <span class="card-badge badge-popular">Bestseller</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Chicken Manchurian</h3>
+                            <p class="item-desc">Golden-fried chicken balls in a dark soy & chilli Manchurian gravy with garlic & ginger.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹329</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="spring rolls" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1515669097368-22e68427d265?w=500&q=80" alt="Spring Rolls">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Vegetable Spring Rolls</h3>
+                            <p class="item-desc">Crispy golden rolls stuffed with stir-fried cabbage, carrots, mushrooms & glass noodles. Served with sweet chilli dip.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹249</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="chilli paneer" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1631515242808-497c3fbd3972?w=500&q=80" alt="Chilli Paneer">
+                            <span class="card-badge badge-new">New</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Chilli Paneer (Dry)</h3>
+                            <p class="item-desc">Fried cottage cheese cubes sautéed with colourful bell peppers, green chillies & Indo-Chinese sauces.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i></div>
+                            <div class="card-footer"><span class="item-price">₹309</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Noodles & Rice -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-bowl-rice"></i> Noodles & Fried Rice</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="hakka noodles" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80" alt="Hakka Noodles">
+                            <span class="card-badge badge-popular">Top Seller</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Vegetable Hakka Noodles</h3>
+                            <p class="item-desc">Stir-fried noodles tossed with crunchy vegetables in dark soy, oyster sauce & sesame oil on high flame.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹269</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="chicken noodles" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80" alt="Chicken Noodles">
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Chicken Hakka Noodles</h3>
+                            <p class="item-desc">Tossed noodles with tender shredded chicken, spring onions & a blend of Chinese sauces on wok fire.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹319</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="schezwan noodles" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80" alt="Schezwan Noodles">
+                            <span class="card-badge badge-chef">Fiery Pick</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Schezwan Noodles</h3>
+                            <p class="item-desc">Wok-tossed noodles in our house-made fiery Schezwan sauce with crunchy vegetables & fried garlic.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i></div>
+                            <div class="card-footer"><span class="item-price">₹289</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="vegetable fried rice" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80" alt="Vegetable Fried Rice">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Vegetable Fried Rice</h3>
+                            <p class="item-desc">Wok-fried day-old rice with mixed vegetables, soy sauce, toasted sesame oil & spring onions.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹249</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="chicken fried rice" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1645696301019-35adcc18fc5e?w=500&q=80" alt="Chicken Fried Rice">
+                            <span class="card-badge badge-popular">Most Ordered</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Chicken Fried Rice</h3>
+                            <p class="item-desc">Wok-fired rice with egg, diced chicken, carrots, peas & a perfect balance of light & dark soy.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹299</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="schezwan fried rice" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80" alt="Schezwan Fried Rice">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Schezwan Fried Rice</h3>
+                            <p class="item-desc">Red-hot Schezwan sauce tossed with wok-fired rice, assorted vegetables & a hint of vinegar.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i></div>
+                            <div class="card-footer"><span class="item-price">₹269</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Chinese Mains -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-bowl-food"></i> Main Dishes</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="honey chilli potato" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80" alt="Honey Chilli Potato">
+                            <span class="card-badge badge-new">Fan Fave</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Honey Chilli Potato</h3>
+                            <p class="item-desc">Crispy fried potato strips glazed in a sweet-spicy honey-chilli sauce with sesame & spring onions.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹259</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="kung pao chicken" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1604908177453-7462950a6a3b?w=500&q=80" alt="Kung Pao Chicken">
+                            <span class="card-badge badge-chef">Chef's Special</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Kung Pao Chicken</h3>
+                            <p class="item-desc">Diced chicken with dried red chillies, peanuts & Sichuan peppercorns in a bold numbing-spicy sauce.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i></div>
+                            <div class="card-footer"><span class="item-price">₹379</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="american chop suey" data-cuisine="chinese">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80" alt="Chop Suey">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>American Chop Suey</h3>
+                            <p class="item-desc">Crispy noodle nest topped with a sweet-tangy vegetable sauce loaded with tofu & colourful veggies.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹289</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================
+             SOUTH INDIAN
+        ========================= -->
+        <div class="cuisine-section" id="section-south">
+            <div class="cuisine-header">
+                <div class="cuisine-icon south"><i class="fa-solid fa-seedling"></i></div>
+                <div class="cuisine-header-text">
+                    <h2>South Indian Cuisine</h2>
+                    <p>Authentic flavours from Tamil Nadu, Kerala & Karnataka — rich coconut, rice & curry leaf traditions</p>
+                </div>
+            </div>
+
+            <!-- South Breakfast -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-sun"></i> Breakfast & Tiffin Specialties</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="masala dosa" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1630383249896-424e482df921?w=500&q=80" alt="Masala Dosa">
+                            <span class="card-badge badge-popular">Legend</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Masala Dosa</h3>
+                            <p class="item-desc">Giant fermented rice & lentil crepe stuffed with spiced potato masala. Served with sambar & 3 chutneys.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹199</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="onion rava dosa" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80" alt="Rava Dosa">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Onion Rava Dosa</h3>
+                            <p class="item-desc">Lacy, crispy semolina dosa with caramelised onions, green chilli & curry leaves — paper-thin crunch.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹229</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="idli sambar" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80" alt="Idli Sambar">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Steamed Idli (4 pcs)</h3>
+                            <p class="item-desc">Soft steamed rice & lentil cakes served with piping hot sambar & fresh coconut chutney.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹169</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="medu vada" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1626776876729-bab4369a5a5a?w=500&q=80" alt="Medu Vada">
+                            <span class="card-badge badge-popular">Crispy Classic</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Medu Vada (2 pcs)</h3>
+                            <p class="item-desc">Ring-shaped urad dal fritters with curry leaves & black pepper — crisp outside, fluffy inside. With sambar & chutney.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹149</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="uttapam" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1630383249896-424e482df921?w=500&q=80" alt="Uttapam">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Vegetable Uttapam</h3>
+                            <p class="item-desc">Thick, spongy fermented rice pancake loaded with diced onions, tomato, capsicum & coriander on top.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹179</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="set dosa" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80" alt="Set Dosa">
+                            <span class="card-badge badge-new">New Addition</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Set Dosa (3 pcs)</h3>
+                            <p class="item-desc">Soft, thick, spongy mini dosas from Karnataka — served in a set of 3 with potato sabzi & peanut chutney.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹189</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- South Indian Curries -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-bowl-food"></i> Curries & Gravies</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="kerala fish curry" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=500&q=80" alt="Kerala Fish Curry">
+                            <span class="card-badge badge-chef">Signature</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Kerala Fish Curry</h3>
+                            <p class="item-desc">Traditional Malabar fish curry cooked in coconut milk with raw mango, mustard seeds & curry leaves.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹449</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="chettinad chicken" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80" alt="Chettinad Chicken">
+                            <span class="card-badge badge-popular">Spice Lovers</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Chettinad Chicken Curry</h3>
+                            <p class="item-desc">Bold Tamil Nadu curry with freshly ground kalpasi, marathi mokku & stone flower spices — bold & aromatic.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i></div>
+                            <div class="card-footer"><span class="item-price">₹429</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="sambar" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=500&q=80" alt="Sambar">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Drumstick Sambar</h3>
+                            <p class="item-desc">Hearty tamarind & lentil stew with drumstick, pearl onions, tomatoes & aromatic sambar powder.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹199</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="avial" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80" alt="Avial">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Avial (Kerala Specialty)</h3>
+                            <p class="item-desc">Mixed seasonal vegetables cooked in a thick coconut & cumin paste, finished with fresh coconut oil & curry leaves.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹259</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="kootu curry" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80" alt="Kootu Curry">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Kootu Curry</h3>
+                            <p class="item-desc">Black chickpeas & raw plantain cooked with a freshly-ground coconut & cumin paste — an Onam feast staple.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹229</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="prawn masala" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1611507925009-9b65e6c6a2e7?w=500&q=80" alt="Prawn Masala">
+                            <span class="card-badge badge-special">Weekend Special</span>
+                            <div class="veg-mark"><span class="dot nonveg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Coastal Prawn Masala</h3>
+                            <p class="item-desc">Juicy prawns in a bold, tangy onion-tomato masala with Goan-style kokum & freshly grated coconut.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹499</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- South Rice Specials -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-bowl-rice"></i> Rice Specialties</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="curd rice" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80" alt="Curd Rice">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Curd Rice (Thayir Sadam)</h3>
+                            <p class="item-desc">Comfort food staple — cooked rice mixed with seasoned yogurt, tempered with mustard, curry leaves & pomegranate.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹179</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="lemon rice" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80" alt="Lemon Rice">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Lemon Rice (Chitranna)</h3>
+                            <p class="item-desc">Tangy turmeric rice tempered with mustard seeds, peanuts, green chilli & fresh curry leaves — Karnataka classic.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹189</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="kerala appam" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80" alt="Appam">
+                            <span class="card-badge badge-chef">Kerala Special</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Kerala Appam (2 pcs)</h3>
+                            <p class="item-desc">Lacy bowl-shaped rice hoppers — crisp at the edges, soft & fluffy in the center. With coconut milk stew.</p>
+                            <div class="spice-level"><span>Spice:</span><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i><i class="fa-solid fa-pepper-hot chilli dim"></i></div>
+                            <div class="card-footer"><span class="item-price">₹219</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- South Desserts -->
+            <div class="menu-category">
+                <p class="category-title"><i class="fa-solid fa-cake-candles"></i> South Indian Sweets</p>
+                <div class="items-grid">
+
+                    <div class="menu-card" data-name="kesari bath" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1609501676725-7186f017a4b7?w=500&q=80" alt="Kesari Bath">
+                            <span class="card-badge badge-popular">Temple Sweet</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Kesari Bath</h3>
+                            <p class="item-desc">Karnataka-style semolina pudding with saffron, ghee, cashews & raisins — served warm & golden.</p>
+                            <div class="card-footer"><span class="item-price">₹129</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="payasam" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1634217280936-c9f5be17ef42?w=500&q=80" alt="Payasam">
+                            <span class="card-badge badge-chef">Kerala Classic</span>
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Ada Pradhaman (Payasam)</h3>
+                            <p class="item-desc">Kerala's iconic Onam dessert — rice ada cooked in rich jaggery & coconut milk with cardamom & fried cashews.</p>
+                            <div class="card-footer"><span class="item-price">₹159</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card" data-name="rava kesari" data-cuisine="south">
+                        <div class="menu-card-img">
+                            <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=500&q=80" alt="Rava Kesari">
+                            <div class="veg-mark"><span class="dot veg"></span></div>
+                        </div>
+                        <div class="menu-card-body">
+                            <h3>Rava Kesari</h3>
+                            <p class="item-desc">Melt-in-the-mouth semolina halwa flavoured with saffron, generous ghee, dry fruits & a hint of rose water.</p>
+                            <div class="card-footer"><span class="item-price">₹139</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- RESERVATION CTA -->
+        <div class="menu-res-cta">
+            <div>
+                <h3>Ready to Dine With Us?</h3>
+                <p>Book a table and experience these flavours in our award-winning restaurant atmosphere</p>
+                <a href="index.html#reservation" class="btn-primary">
+                    <i class="fa-solid fa-calendar-check"></i> Reserve a Table
+                </a>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer class="mini-footer">
+    <div class="container">
+        <p>&copy; <span id="yr"></span> Yummy Yummy Restaurant · All Rights Reserved · Made with ❤️ in India</p>
+    </div>
+</footer>
+
+<script>
+    // Footer year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Cuisine tab switching
+    const ctabs = document.querySelectorAll('.ctab');
+    const sections = document.querySelectorAll('.cuisine-section');
+
+    ctabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            const cuisine = this.dataset.cuisine;
+
+            ctabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            if (cuisine === 'all') {
+                sections.forEach(s => s.classList.add('active'));
+            } else {
+                sections.forEach(s => s.classList.remove('active'));
+                const target = document.getElementById('section-' + cuisine);
+                if (target) target.classList.add('active');
+            }
+
+            // Clear search when switching tabs
+            document.getElementById('menuSearch').value = '';
+            showAllCards();
+        });
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById('menuSearch');
+    const noResults = document.getElementById('noResults');
+
+    function showAllCards() {
+        document.querySelectorAll('.menu-card').forEach(c => c.style.display = '');
+        noResults.style.display = 'none';
+    }
+
+    searchInput.addEventListener('input', function () {
+        const term = this.value.toLowerCase().trim();
+
+        if (!term) {
+            showAllCards();
+            // Reset to current tab view
+            const activeTab = document.querySelector('.ctab.active').dataset.cuisine;
+            if (activeTab === 'all') {
+                sections.forEach(s => s.classList.add('active'));
+            }
+            return;
+        }
+
+        // Show all sections when searching
+        sections.forEach(s => s.classList.add('active'));
+
+        let matchCount = 0;
+        document.querySelectorAll('.menu-card').forEach(card => {
+            const name = card.dataset.name || '';
+            const desc = card.querySelector('.item-desc')?.textContent.toLowerCase() || '';
+            const heading = card.querySelector('h3')?.textContent.toLowerCase() || '';
+            const matches = name.includes(term) || desc.includes(term) || heading.includes(term);
+            card.style.display = matches ? '' : 'none';
+            if (matches) matchCount++;
+        });
+
+        noResults.style.display = matchCount === 0 ? 'block' : 'none';
+    });
+
+    // Ripple on add buttons
+    document.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            this.innerHTML = '<i class="fa-solid fa-check"></i>';
+            this.style.background = 'var(--gold)';
+            this.style.color = 'var(--ink)';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                this.style.background = '';
+                this.style.color = '';
+            }, 1200);
+        });
+    });
+</script>
+</body>
+</html>

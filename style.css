@@ -78,6 +78,9 @@ section { padding: 5rem 0; }
 .btn-gold { background: var(--gold); color: var(--ink); font-weight: 700; font-size: .9rem; padding: 1rem; border-radius: var(--radius); }
 .btn-gold:hover { background: var(--gold-light); }
 .btn-full { width: 100%; justify-content: center; }
+.btn-outline-dark { background: transparent; color: var(--ink); border: 1.5px solid rgba(0,0,0,.3); }
+.btn-outline-dark:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
+.menu-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
 /* Ripple */
 .ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.4); transform: scale(0); animation: ripple .6s linear; pointer-events: none; }
