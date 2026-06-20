@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Full Menu — Yummy Yummy Restaurant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -550,7 +550,7 @@
         <!-- ========================
              NORTH INDIAN
         ========================= -->
-        <div class="cuisine-section active" id="section-indian">
+        <div class="cuisine-section" id="section-indian">
             <div class="cuisine-header">
                 <div class="cuisine-icon indian"><i class="fa-solid fa-fire-flame-curved"></i></div>
                 <div class="cuisine-header-text">
@@ -1431,6 +1431,9 @@
     // Cuisine tab switching
     const ctabs = document.querySelectorAll('.ctab');
     const sections = document.querySelectorAll('.cuisine-section');
+
+    // Page load: "All Cuisines" tab is active by default, so show all sections
+    sections.forEach(s => s.classList.add('active'));
 
     ctabs.forEach(tab => {
         tab.addEventListener('click', function () {
